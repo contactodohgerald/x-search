@@ -56,6 +56,13 @@ const getSession = (key) => {
     } 
 }
 
-const services =  {getUserIp, getUrlParams, storageAvailable, setSession, getSession}
+const clearSession = () => {
+    if(typeof window !== 'undefined'){
+        window.sessionStorage.clear();
+    }
+    return true;
+}
+
+const services =  {getUserIp, getUrlParams, storageAvailable, setSession, getSession, clearSession}
 
 export default services;

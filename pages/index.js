@@ -20,7 +20,7 @@ export default function Home() {
       <Layout>
         <About details={sitedetails} />
         <Feature />
-        <Tryout />
+        <Tryout details={sitedetails} />
         <Pricing details={sitedetails} />
         <FAQ  details={sitedetails} />
         <Contact details={sitedetails} />

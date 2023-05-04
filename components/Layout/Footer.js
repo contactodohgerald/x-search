@@ -27,9 +27,9 @@ const Footer = () => {
         </svg>
       </div>
       <div className="container mx-auto px-4">
-        <div className="flex flex-wrap">
-          <div className="w-full lg:w-6/12 px-4">
-            <LogoVPN className="h-8 w-auto mb-6" />
+        <div className="flex flex-wrap items-center md:justify-between justify-center">
+          <div className="w-full px-4 text-center ">
+            <LogoVPN className="h-8 w-auto mb-6"  />
             <p className="mb-4">A cover letter ensures you stand out and increases your chances of getting a job. We make that dream closer than you can imagine</p>
             <div className="mt-6">
               <button
@@ -52,63 +52,7 @@ const Footer = () => {
               </button>
             </div>
           </div>
-          <div className="w-full lg:w-6/12 px-4">
-            <div className="flex flex-wrap items-top mb-6">
-              <div className="w-full lg:w-4/12 px-4 ml-auto">
-                <span className="block uppercase text-gray-600 text-sm font-semibold mb-2"> Our Company</span>
-                <ul className="list-unstyled">
-                  <li>
-                    <Link href={"/"} className="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm"> 
-                      About Us
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={"/"} className="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm">  
-                      Pricing
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={"/"} className="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm">  
-                      Cover Letter
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={"/"} className="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm">  
-                      Cover Letter Samples
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="w-full lg:w-4/12 px-4">
-                <span className="block uppercase text-gray-600 text-sm font-semibold mb-2">
-                  Support
-                </span>
-                <ul className="list-unstyled">
-                  <li>
-                    <Link href={"/"} className="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm">  
-                      FAQ
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={"/"} className="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm">  
-                      Terms Of Service
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={"/"} className="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm">  
-                      Contact Us
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href={"/"} className="text-gray-700 hover:text-gray-900 font-semibold block pb-2 text-sm">  
-                      Privacy Policy
-                    </Link>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+         
         </div>
         <hr className="my-6 border-gray-400" />
         <div className="flex flex-wrap items-center md:justify-between justify-center">

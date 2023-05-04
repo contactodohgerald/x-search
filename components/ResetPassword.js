@@ -88,7 +88,7 @@ function ResetPassword() {
                 ) : (
                   <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                     <form onSubmit={resetUserPassword}>
-                    <div className="relative w-full mb-3">
+                      <div className="relative w-full mb-3">
                         <Label for="code">Code</Label>
                         <Input
                           type="text"
