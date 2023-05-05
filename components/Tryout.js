@@ -50,7 +50,7 @@ const Tryout = ({details}) => {
           })
         })
         .catch((error) => {
-          toast.error(error.message);
+          toast.error(error.response.data.message);
         })
       .finally(() => setLoaded(false));
     } catch (err) {
@@ -123,7 +123,7 @@ const Tryout = ({details}) => {
                 <div className="text-left italic"><strong>~ {question}</strong></div>
                 <Textarea 
                     rows="17" 
-                    value={answer} 
+                    defaultValue={answer} 
                   />
               </motion.div>
             )}

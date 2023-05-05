@@ -48,7 +48,7 @@ function Login() {
             toast.success(message);
             setTimeout(() => {
               window.location.href = "/_generate";
-            }, 4000);
+            }, 3000);
           } else {
             toast.error(res.message);
           }

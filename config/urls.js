@@ -12,9 +12,14 @@ const api_urls = {
     auth_search: baseUrl+'/search-query-auth',
     free_search: baseUrl+'/search-query-free',
     update_password: baseUrl+'/auth/update-password',
+    news_letter: baseUrl+'/news-letter',
+    contact_us: baseUrl+'/contact-us',
 
     //get request
     get_plans: baseUrl+'/get-plans',
+    get_user_plans: baseUrl+'/get-current-plan',
+    get_user_trans: baseUrl+'/get-user-trans',
+    get_site_details: baseUrl+'/site-details',
 }
 
 export default api_urls;

@@ -110,7 +110,7 @@ const Pricing = ({ details }) => {
                       Works on All Devices
                     </li>
                     <li className="relative check custom-list my-2">
-                      Number of Cover letter <strong>{plan.total_request}</strong>
+                      Number of Request Tier <strong>{plan.total_request}</strong>
                     </li>
                   </ul>
                   <div className="flex flex-col w-full justify-center mb-8 flex-none ">

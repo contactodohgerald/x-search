@@ -54,7 +54,7 @@ const Generate = () => {
           })
         })
         .catch((error) => {
-          toast.error(error.message);
+          toast.error(error.response.data.message);
         })
       .finally(() => setLoaded(false));
     } catch (err) {
@@ -112,7 +112,7 @@ const Generate = () => {
                             <Textarea
                                 name="result"
                                 rows="20"
-                                value={answer}
+                                defaultValue={answer}
                             />
                           </div>
                         </div>

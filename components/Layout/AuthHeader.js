@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Link as LinkScroll } from "react-scroll";
 import ButtonOutline from "../misc/ButtonOutline";
-import LogoVPN from "../../public/assets/Logo.svg";
+import LogoVPN from "../../public/assets/used/Logo.svg";
 import services from "../../config/services";
 import { toast } from "react-toastify";
 
@@ -19,7 +19,7 @@ const AuthHeader = () => {
     toast.success('Successfully logged out')
     setTimeout(() => {
         window.location.href = "/login";
-    }, 4000);
+    }, 3000);
   }
   return (
     <>
