@@ -31,14 +31,12 @@ const Pricing = ({ details }) => {
   const processSubscription = async (uuid) => {
     setLoaded(true)
     const user_id = services.getSession('token');
-
     const headers = {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${user_id.token}`
     }
     
-    await axios
-    .post(api_urls.subscribed, {plan_id: uuid, type: "flutterwave"}, {
+    await axios.post(api_urls.subscribed, {plan_id: uuid, type: "flutterwave"}, {
       headers: headers
     })
     .then((response) => {
@@ -118,7 +116,7 @@ const Pricing = ({ details }) => {
                       {plan.amount} NGN
                     </p>
                     {services.getSession('isloggedin') ? (
-                      <ButtonOutline onClick={() => processSubscription(plan.uuid)}>Subscribe</ButtonOutline>
+                      <ButtonOutline onClick={() => processSubscription(plan._id)}>Subscribe</ButtonOutline>
                     ):(
                       <ButtonOutline onClick={notifyUser}>Subscribe</ButtonOutline>
                     )}

@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import api_urls from "../config/urls";
 import axios from "axios";
 import Loader from "../components/Layout/Loader";
+import { toast } from "react-toastify";
 
 export default function Home() {
 

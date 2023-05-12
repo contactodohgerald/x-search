@@ -1,4 +1,4 @@
-const baseUrl = "http://localhost:8000/api/v1";
+const baseUrl = "https://x-search-api.onrender.com/api/v1";
 
 const api_urls = {
     //post request
