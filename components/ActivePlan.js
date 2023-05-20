@@ -1,35 +1,36 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { motion } from "framer-motion";
 import moment from "moment/moment";
 
-import api_urls from "../config/urls";
-import services from "../config/services";
 import ButtonOutline from "./misc/ButtonOutline";
 import ScrollAnimationWrapper from "./Layout/ScrollAnimationWrapper";
 import getScrollAnimation from "../utils/getScrollAnimation";
+import get_request from "../config/get.request";
+import services from "../config/services";
 
 const ActivePlan = () => {
     const [plans, setPlans] = useState(null);
     const scrollAnimation = useMemo(() => getScrollAnimation(), []);
-    const user_id = services.getSession('token');
 
     useEffect(async () => {
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user_id.token}`
-        }
-        await axios
-            .get(api_urls.get_user_plans, {
-            headers: headers
+        //get active user plan
+        await get_request.getUserActivePlan()
+            .then((res) => {
+                setPlans(res.data.data)
             })
-            .then((response) => {
-                const res = response.data;
-                setPlans(res.data);
-            })
-            .catch((error) => {
-                toast.error(error.response.data.message);
+            .catch((err) => {
+                if(err.message = '"Network Error'){
+                    toast.error(err.message)
+                }else if(err.response.statusText == 'Unauthorized'){
+                    services.clearSession();
+                    toast.success('Please login to continue')
+                    setTimeout(() => {
+                        window.location.href = "/login";
+                    }, 2000);
+                }else{
+                    toast.error(err.response.data.message)
+                }
             })
     }, []);
     return (
@@ -43,7 +44,7 @@ const ActivePlan = () => {
                                     <div aria-hidden="true" className="absolute top-0 w-full h-full rounded-2xl bg-white shadow-xl transition duration-500 group-hover:scale-105 lg:group-hover:scale-110"></div>
                                     <div className="relative p-6 space-y-6 lg:p-8">
                                         <h3 className="text-2xl text-gray-600 font-semibold text-center">
-                                            {plans ? plans.getActivePlan.name : ""} Plan</h3>
+                                            {plans ? plans.name : ""} Plan</h3>
                                         <div>
                                             <div className="relative flex justify-around">
                                                 <div className="flex items-end">

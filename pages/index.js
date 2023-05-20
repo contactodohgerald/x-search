@@ -11,17 +11,15 @@ import api_urls from "../config/urls";
 import axios from "axios";
 import Loader from "../components/Layout/Loader";
 import { toast } from "react-toastify";
+import get_request from "../config/get.request";
 
 export default function Home() {
-
   const [sitedetails, setSitedetails] = useState(null)
 
   useEffect(async () => {
-      await axios
-        .get(api_urls.get_site_details)
-        .then((response) => {
-            const res = response.data;
-            setSitedetails(res.data);
+      await get_request.getSiteDetails()
+        .then((res) => {
+            setSitedetails(res.data.data)
         })
         .catch((error) => {
             toast.error(error.message);

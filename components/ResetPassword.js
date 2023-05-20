@@ -77,7 +77,7 @@ function ResetPassword() {
                 <div className="rounded-t mb-0 px-6 py-6">
                   <div className="text-center mb-3">
                     <h6 className="text-gray-600 text-sm font-bold">Reset Password</h6>
-                    {errorMessage[0] && (
+                    {errorMessage && (
                       <p className="text-orange-500"> {errorMessage[0]} </p>
                     )}
                   </div>

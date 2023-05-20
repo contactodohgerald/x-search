@@ -36,7 +36,7 @@ const Generate = () => {
       const user_id = services.getSession('token');
       const headers = {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user_id.token}`
+        'Authorization': `Bearer ${user_id ? user_id.token : ''}`
       }
 
       const queryData = await schema.validate(formData);
@@ -61,6 +61,25 @@ const Generate = () => {
       setLoaded(false);
       toast.error(err.errors[0]);
     }
+  }
+
+  const copyPrompt = () => {
+    if(answer != ''){
+      navigator.clipboard.writeText(answer);
+      toast.success('copied!');
+    }
+    return
+  }
+
+  const downloadPrompt = () => {
+    if(answer != ''){
+      const link = document.createElement('a');
+      link.href = `data:text/plain;charset=utf-8,${encodeURIComponent(answer)}`;
+      link.download = 'coverletter.txt';
+      link.click();
+      toast.success('downloaded!');
+    }
+    return
   }
 
   return (
@@ -106,7 +125,7 @@ const Generate = () => {
                         <div className="text-lg font-medium uppercase p-8 border-b border-blue-800 tracking-wide">
                           Your Cover Letter 
                         </div>
-                        <div className="flex-auto px-4 lg:px-10 py-10 pt-0 mt-5">
+                        <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                           <div className="text-left italic"><strong>~ {question}</strong></div>
                           <div>
                             <Textarea
@@ -115,6 +134,14 @@ const Generate = () => {
                                 defaultValue={answer}
                             />
                           </div>
+                        </div>
+                        <div className="flex-auto px-4 lg:px-10 py-10 pt-0 text-center">
+                          <button onClick={copyPrompt} type="button" className="text-white bg-gray-500 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-full text-sm px-5 py-2.5 mr-2 mb-2">Copy</button>
+                          <button onClick={downloadPrompt} type="button" className="text-white-500 bg-orange-500 focus:ring-4 focus:ring-blue-500 rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2">
+                            <span>Download </span>
+                            <span className="font-medium text-gray-700 ml-2">➔</span>
+                            <span> PDF</span>
+                          </button>
                         </div>
                       </div>
                     </div>

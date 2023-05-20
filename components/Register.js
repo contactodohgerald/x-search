@@ -93,7 +93,7 @@ function Register() {
                     <h6 className="text-gray-600 text-sm font-bold">
                       Register
                     </h6>
-                    {errorMessage[0] && (
+                    {errorMessage && (
                       <p className="text-orange-500"> {errorMessage[0]} </p>
                     )}
                   </div>
@@ -195,9 +195,9 @@ function Register() {
                   </Link>
                 </div>
                 <div className="w-1/2 text-right">
-                  <Link href={"/register"} className="text-gray-300">
+                  <Link href={"/login"} className="text-gray-300">
                     <small style={{ cursor: "pointer" }}>
-                      Create new account
+                      Already a member ? Login
                     </small>
                   </Link>
                 </div>

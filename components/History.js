@@ -1,36 +1,29 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { toast } from "react-toastify";
-import axios from "axios";
 import { motion } from "framer-motion";
 import moment from "moment/moment";
 
-import api_urls from "../config/urls";
-import services from "../config/services";
 import ScrollAnimationWrapper from "./Layout/ScrollAnimationWrapper";
 import getScrollAnimation from "../utils/getScrollAnimation";
 import Status from "./Layout/Status";
+import get_request from "../config/get.request";
+import { toast } from "react-toastify";
 
 const History = () => {
   const [trans, setTrans] = useState([]);
   const scrollAnimation = useMemo(() => getScrollAnimation(), []);
-  const user_id = services.getSession('token');
 
   useEffect(async () => {
-      const headers = {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${user_id.token}`
-      }
-      await axios
-          .get(api_urls.get_user_trans, {
-          headers: headers
-          })
-          .then((response) => {
-              const res = response.data;
-              setTrans(res.data);
-          })
-          .catch((error) => {
-            toast.error(error.response.data.message);
-          })
+    await get_request.getUserTransHistory()
+      .then((res) => {
+          setTrans(res.data.data);
+      })
+      .catch((err) => {
+        if(err.message = '"Network Error'){
+          toast.error(err.message)
+        }else if(err.response.statusText == 'Bad Request'){
+          toast.error(err.response.data.message)
+        }
+      })
   }, []);
 
   return (
@@ -63,8 +56,8 @@ const History = () => {
               </tr>
             </thead>
             <tbody className="block md:table-row-group">
-                {trans.length > 0 ? trans.map((item) => (
-                    <tr className="border border-orange-500 md:border-none block md:table-row">
+                {trans.length > 0 ? trans.map((item, kyy) => (
+                    <tr key={kyy} className="border border-orange-500 md:border-none block md:table-row">
                        <td className="p-2 md:border md:border-grey-500 text-left block md:table-cell">
                             <span className="inline-block w-1/3 md:hidden font-bold">
                               Desc.

@@ -50,7 +50,6 @@ function VerifyEmail() {
       setErrorMessage(err.errors);
     }
   };
-
   return (
     <>
       <section className="w-full h-full auth-backgound bg-orange-100 py-14">
@@ -68,8 +67,8 @@ function VerifyEmail() {
               <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-300 border-0">
                 <div className="rounded-t mb-0 px-6 py-6">
                   <div className="text-center mb-3">
-                    <h6 className="text-gray-600 text-sm font-bold">Find your <strong>X-Search</strong> account</h6>
-                    {errorMessage[0] && (
+                    <h6 className="text-gray-600 text-sm font-bold">Find your <strong>X-Search</strong> account </h6>
+                    {errorMessage && (
                       <p className="text-orange-500"> {errorMessage[0]} </p>
                     )}
                   </div>

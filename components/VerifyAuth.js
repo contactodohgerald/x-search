@@ -96,7 +96,7 @@ function VerifyAuth() {
                     <h6 className="text-gray-600 text-sm font-bold">
                       Verify Code
                     </h6>
-                    {errorMessage[0] && (
+                    {errorMessage && (
                       <p className="text-orange-500"> {errorMessage[0]} </p>
                     )}
                   </div>
