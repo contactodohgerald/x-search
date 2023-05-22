@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { object, string } from "yup";
+import { toast } from "react-toastify";
 
 import Input from "../misc/Input";
 import Textarea from "../misc/Textarea";
 import ButtonPrimary from "../misc/ButtonPrimary";
-import api_urls from "../../config/urls";
-import { toast } from "react-toastify";
 import Loader from "./Loader";
+import post_request from "../../config/post.request";
 
 const ContactUs = () => {
     const [loaded, setLoaded] = useState(false);
@@ -34,21 +33,19 @@ const ContactUs = () => {
         setLoaded(true);
         e.preventDefault();
         const queryData = await schema.validate(formData);
-        await axios
-          .post(api_urls.contact_us, queryData)
-          .then((response) => {
-            const res = response.data;
-            toast.success(res.message);
+        await post_request.contactUs(queryData)
+        .then((res) => {
+            toast.success(res.data.message);
             setFormData({
                 email: "",
                 subject: "",
                 message: "",
             });
-          })
-          .catch((error) => {
-            toast.error(error.message);
-          })
-          .finally(() => setLoaded(false));
+        })
+        .catch((err) => {
+            toast.error(err.response.data.message)
+        })
+        .finally(() => setLoaded(false));
       } catch (err) {
         setLoaded(false);
         toast.error(err.errors[0]);
@@ -64,39 +61,37 @@ const ContactUs = () => {
                     Questions? Concerns? We're here to listen and respond!{" "}
                 </div>
                 <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-                    {loaded ? (
-                        <Loader />
-                    ) : (
-                        <form onSubmit={sendContactMail}>
-                            <Input
+                    <form onSubmit={sendContactMail}>
+                        <Input
                             type="email"
                             name="email"
                             value={formData.email}
                             onChange={handleChange}
                             placeholder="Email"
-                            />
-                            <Input
+                        />
+                        <Input
                             type="text"
                             name="subject"
                             value={formData.subject}
                             onChange={handleChange}
                             placeholder="Subject"
-                            />
-                            <Textarea
+                        />
+                        <Textarea
                             name="message"
                             rows="1"
                             value={formData.message}
                             onChange={handleChange}
                             placeholder="Message"
-                            />
-                            <div className="text-center mt-6">
+                        />
+                        <div className="text-center mt-6">
+                        {loaded ?  <Loader type="button" /> :
                             <ButtonPrimary>
-                                <span>Contact Us</span>
-                                <span className="font-medium text-gray-300 ml-2">➔</span>
+                            <span>Subscribe Newsletter</span>
+                            <span className="font-medium text-gray-700 ml-2">➔</span>
                             </ButtonPrimary>
-                            </div>
-                        </form>
-                    )}
+                        }
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

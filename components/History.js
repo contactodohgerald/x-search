@@ -18,7 +18,7 @@ const History = () => {
           setTrans(res.data.data);
       })
       .catch((err) => {
-        if(err.message = '"Network Error'){
+        if(err.message =='"Network Error'){
           toast.error(err.message)
         }else if(err.response.statusText == 'Bad Request'){
           toast.error(err.response.data.message)

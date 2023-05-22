@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { object, string } from "yup";
+import { toast } from "react-toastify";
 
 import Input from "../misc/Input";
 import ButtonOutline from "../misc/ButtonOutline";
-import api_urls from "../../config/urls";
-import axios from "axios";
-import { toast } from "react-toastify";
-
 import Loader from "./Loader";
+import post_request from "../../config/post.request";
+
 const Newsletter = ({ details }) => {
   const [loaded, setLoaded] = useState(false);
   const [formData, setFormData] = useState({
@@ -29,19 +28,17 @@ const Newsletter = ({ details }) => {
       setLoaded(true);
       e.preventDefault();
       const queryData = await schema.validate(formData);
-      await axios
-        .post(api_urls.news_letter, queryData)
-        .then((response) => {
-          const res = response.data;
-          toast.success(res.message);
-          setFormData({
-            email: "",
-          });
-        })
-        .catch((error) => {
-          toast.error(error.message);
-        })
-        .finally(() => setLoaded(false));
+      await post_request.newsLetter(queryData)
+      .then((res) => {
+        toast.success(res.data.message);
+        setFormData({
+          email: "",
+        });
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message)
+      })
+      .finally(() => setLoaded(false));
     } catch (err) {
       setLoaded(false);
       toast.error(err.errors[0]);
@@ -73,7 +70,7 @@ const Newsletter = ({ details }) => {
                 />
               </svg>
             </div>
-            <span className="text-gray-700 text-lg ml-3">{details.email}</span>
+            <span className="text-gray-700 text-lg ml-3">{details ? details.email : 'N/A'}</span>
           </li>
           <li className="flex items-center mt-3">
             <div className="bg-green-200 rounded-full p-2 fill-current text-green-700">
@@ -92,7 +89,7 @@ const Newsletter = ({ details }) => {
                 />
               </svg>
             </div>
-            <span className="text-gray-700 text-lg ml-3">{details.phone}</span>
+            <span className="text-gray-700 text-lg ml-3">{details ? details.phone : 'N/A'}</span>
           </li>
           <li className="flex items-center mt-3">
             <div className="bg-green-200 rounded-full p-2 fill-current text-green-700">
@@ -112,29 +109,27 @@ const Newsletter = ({ details }) => {
               </svg>
             </div>
             <span className="text-gray-700 text-lg ml-3">
-              {details.address}
+              {details ? details.address : 'N/A'}
             </span>
           </li>
         </ul>
       </div>
       <div className="flex-auto px-4 lg:px-10 py-10 ">
-        {loaded ? (
-          <Loader />
-        ):(
-          <form className="text-left" onSubmit={subscribeToNewsLetter}>
-            <Input
-              type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="Email"
-            />
+        <form className="text-left" onSubmit={subscribeToNewsLetter}>
+          <Input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="Email"
+          />
+          {loaded ?  <Loader type="button" /> :
             <ButtonOutline>
               <span>Subscribe Newsletter</span>
               <span className="font-medium text-gray-700 ml-2">➔</span>
             </ButtonOutline>
-          </form>
-        )}
+          }
+        </form>
       </div>
     </div>
   );

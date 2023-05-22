@@ -9,7 +9,7 @@ class GetRequestServices {
     constructor () {
         this.header = {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${_response ? _response.token : ''}`
+            'Authorization': `Bearer ${_response ? _response.data.token : ''}`
         }
     }
     
@@ -27,11 +27,13 @@ class GetRequestServices {
         })
     }
 
-     //get sitedetails
-     async getSiteDetails() {
-        return await axios.get(api_urls.get_site_details,  {
-            headers: this.header
-        })
+    //get sitedetails
+    async getSiteDetails() {
+        return await axios.get(api_urls.get_site_details)
+    }
+    
+    async getSitePlans() {
+        return await axios.get(api_urls.get_plans)
     }
 
 }

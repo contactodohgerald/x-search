@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import Link from "next/link";
 import { object, string, ref } from "yup";
 import { toast } from "react-toastify";
@@ -8,8 +7,8 @@ import Label from "./misc/Label";
 import Input from "../components/misc/Input";
 import ButtonPrimary from "./misc/ButtonPrimary";
 import services from "../config/services";
-import api_urls from "../config/urls";
 import Loader from "./Layout/Loader";
+import post_request from "../config/post.request";
 
 function Register() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -43,30 +42,25 @@ function Register() {
       e.preventDefault();
       const user = await registerSchema.validate(formData);
       const ip_address = await services.getUserIp();
-      await axios
-        .post(api_urls.register, { ...user, ip_address })
-        .then((response) => {
-          const res = response.data;
-          if (res.status == "success") {
-            toast.success(res.message);
-            setTimeout(() => {
-              window.location.href = "/verify-auth?uuid=" + res.data.uuid;
-            }, 3000);
-          } else {
-            toast.error(res.message);
-            setFormData({
-              fullname: "",
-              email: "",
-              username: "",
-              password: "",
-              c_password: "",
-            });
-          }
-        })
-        .catch((error) => {
-          toast.error(error.response.data.message);
-        })
-        .finally(() => setLoaded(false));
+      const data_request = {...user, ip_address}
+      await post_request.registerUser(data_request)
+      .then((res) => {
+        setFormData({
+          fullname: "",
+          email: "",
+          username: "",
+          password: "",
+          c_password: "",
+        });
+        toast.success(res.data.message);
+        setTimeout(() => {
+          window.location.href = "/verify-auth?uuid=" + res.data.data.uuid;
+        }, 2000);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message)
+      })
+      .finally(() => setLoaded(false));
     } catch (err) {
       setLoaded(false);
       setErrorMessage(err.errors);
@@ -100,9 +94,6 @@ function Register() {
                   <hr className="mt-6 border-b-1 border-gray-400" />
                 </div>
                 <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
-                  {loaded ? (
-                    <Loader />
-                  ) : (
                     <form onSubmit={registerUser}>
                       <div className="relative w-full mb-3">
                         <Label for="fullname">Full Name</Label>
@@ -180,10 +171,11 @@ function Register() {
                         </label>
                       </div>
                       <div className="text-center mt-6">
+                      {loaded ? <Loader type="button" /> : 
                         <ButtonPrimary>Register</ButtonPrimary>
+                      }
                       </div>
                     </form>
-                  )}
                 </div>
               </div>
               <div className="relative flex flex-wrap mt-6">

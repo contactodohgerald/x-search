@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { toast } from "react-toastify";
 import { object, string } from "yup";
 
@@ -9,8 +8,8 @@ import Input from "../components/misc/Input";
 import Link from "next/link";
 import ButtonOutline from "./misc/ButtonOutline";
 import services from "../config/services";
-import api_urls from "../config/urls";
 import Loader from "./Layout/Loader";
+import post_request from "../config/post.request";
 
 function VerifyAuth() {
   const user_id = services.getUrlParams("uuid");
@@ -36,28 +35,18 @@ function VerifyAuth() {
       setLoaded(true);
       e.preventDefault();
       const res = await codeSchema.validate(formData);
-      await axios
-        .post(api_urls.verify_code, {
-          ...res,
-          user_id,
-          type: "account-verification",
-        })
-        .then((response) => {
-          const res = response.data;
-          if (res.status == "success") {
-            toast.success(res.message);
-            window.location.href = "/login";
-          } else {
-            toast.error(res.message);
-            setFormData({
-              code: "",
-            });
-          }
-        })
-        .catch((error) => {
-          toast.error(error.response.data.message);
-        })
-        .finally(() => setLoaded(false));
+      const data_request = {...res, user_id, type: "account-verification"}
+      await post_request.verifyAuthCode(data_request)
+      .then((res) => {
+        toast.success(res.data.message);
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 2000);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message)
+      })
+      .finally(() => setLoaded(false));
     } catch (err) {
       setLoaded(false);
       setErrorMessage(err.errors);
@@ -65,16 +54,14 @@ function VerifyAuth() {
   };
   const resendVerifyCode = async () => {
     setLoaded(true);
-    await axios
-      .post(api_urls.resend_code, { user_id, type: "account-verification" })
-      .then((response) => {
-        const res = response.data;
-        toast.success(res.message);
-      })
-      .catch((error) => {
-        setErrorMessage(error.message);
-      })
-      .finally(() => setLoaded(false));
+    await post_request.resendAuthCode(user_id, "account-verification")
+    .then((res) => {
+      toast.success(res.data.message);
+    })
+    .catch((err) => {
+      toast.error(err.response.data.message)
+    })
+    .finally(() => setLoaded(false));
   };
   return (
     <>
@@ -102,9 +89,6 @@ function VerifyAuth() {
                   </div>
                   <hr className="mt-6 border-b-1 border-gray-400" />
                 </div>
-                {loaded ? (
-                  <Loader />
-                ) : (
                   <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                     <form onSubmit={verifyAccount}>
                       <div className="relative w-full mb-3">
@@ -119,15 +103,18 @@ function VerifyAuth() {
                         />
                       </div>
                       <div className="text-center mt-6">
-                        <ButtonPrimary>Verify Code</ButtonPrimary>
+                        {loaded ?  <Loader  type="button"/>  : 
+                          <ButtonPrimary>Verify Code</ButtonPrimary>
+                        }
                       </div>
                     </form>
                     <hr className="mt-6 border-b-1 border-gray-400 mb-3" />
-                    <ButtonOutline onClick={resendVerifyCode}>
-                      Didn't Code? Resend!
-                    </ButtonOutline>
+                    {loaded ?  <Loader  type="button"/>  : 
+                      <ButtonOutline onClick={resendVerifyCode}>
+                        Didn't Code? Resend!
+                      </ButtonOutline>
+                    }
                   </div>
-                )}
               </div>
               <div className="relative flex flex-wrap mt-6">
                 <div className="w-full">

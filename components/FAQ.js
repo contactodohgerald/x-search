@@ -24,7 +24,7 @@ const FAQ = ({ details }) => {
                 What are the accepted payment methods?
               </h3>
               <p className="leading-tight text-justify">
-                Currently, <strong>{details.name}</strong>. allows for the
+                Currently, <strong>{details ? details.name : 'N/A'}</strong>. allows for the
                 Flutterwave as our primary payment method. But we are still in
                 negotions with other company, hopefully we will reach a contract
                 soon.
@@ -49,7 +49,7 @@ const FAQ = ({ details }) => {
                 How Do I Cancel, Downgrade or Delete My Account?
               </h3>
               <p className="leading-tight text-justify">
-                You can cancel a <strong>{details.name}</strong>. account right
+                You can cancel a <strong>{details ? details.name : 'N/A'}</strong>. account right
                 from our website by logging into the app. To do that visit your
                 dashboard page and then click the "Remove Account" option from
                 the menu.{" "}
@@ -101,10 +101,10 @@ const FAQ = ({ details }) => {
             </div>
             <div className="bg-orange-100 col-start-6 col-end-10 p-4 rounded-xl my-4 mr-auto shadow-md">
               <h3 className="font-semibold text-lg mb-1">
-                How can I use <strong>{details.name}</strong>. for free?
+                How can I use <strong>{details ? details.name : 'N/A'}</strong>. for free?
               </h3>
               <p className="leading-tight text-justify">
-                <strong>{details.name}</strong>. has a few different tools you
+                <strong>{details ? details.name : 'N/A'}</strong>. has a few different tools you
                 can use 100% for free without entering any credit card details.{" "}
               </p>
             </div>

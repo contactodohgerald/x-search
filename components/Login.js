@@ -10,6 +10,7 @@ import ButtonPrimary from "./misc/ButtonPrimary";
 import Label from "./misc/Label";
 import Input from "../components/misc/Input";
 import Loader from "./Layout/Loader";
+import post_request from "../config/post.request";
 
 function Login() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -35,35 +36,29 @@ function Login() {
       setLoaded(true);
       e.preventDefault();
       const userData = await loginSchema.validate(formData);
-      await axios
-        .post(api_urls.login, userData)
-        .then((response) => {
-          const res = response.data;
-          if (res.status == "success") {
-            if (services.storageAvailable("sessionStorage")) {
-              services.setSession("token", JSON.stringify(res.data));
-              services.setSession("isloggedin", true);
-            }
-            const message = res.message + ", welcome back " + res.data.username;
-            toast.success(message);
-            setTimeout(() => {
-              window.location.href = "/_generate";
-            }, 3000);
-          } else {
-            toast.error(res.message);
+      await post_request.loginUser(userData)
+      .then((res) => {
+          if (services.storageAvailable("sessionStorage")) {
+            services.setSession("token", JSON.stringify(res.data));
+            services.setSession("isloggedin", true);
           }
-        })
-        .catch((error) => {
-          const _err = error.response.data;
-          if (_err.message == "Account not activated yet") {
-            window.location.href = "/verify-auth?uuid=" + _err.data;
-          }
-          toast.error(_err.message);
-        })
-        .finally(() => setLoaded(false));
-    } catch (err) {
+          const message = res.data.message + ", welcome back " + res.data.data.username;
+          toast.success(message);
+          setTimeout(() => {
+            window.location.href = "/_generate";
+          }, 3000);
+
+      })
+      .catch((err) => {
+        if (err.response.data.message == "Account not activated yet") {
+          window.location.href = "/verify-auth?uuid=" + err.response.data.data;
+        }
+        toast.error(err.response.data.message)
+      })
+      .finally(() => setLoaded(false));
+    } catch (error) {
       setLoaded(false);
-      setErrorMessage(err.errors);
+      setErrorMessage(error.errors);
     }
   };
 
@@ -91,9 +86,7 @@ function Login() {
                   </div>
                   <hr className="mt-6 border-b-1 border-gray-400" />
                 </div>
-                {loaded ? (
-                  <Loader />
-                ) : (
+              
                   <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                     <form onSubmit={loginUser}>
                       <div className="relative w-full mb-3">
@@ -133,11 +126,13 @@ function Login() {
                       </div>
 
                       <div className="text-center mt-6">
+                      {loaded ? <Loader type="button" /> :
                         <ButtonPrimary>Login</ButtonPrimary>
+                      }
                       </div>
                     </form>
                   </div>
-                )}
+             
               </div>
               <div className="relative flex flex-wrap mt-6">
                 <div className="w-1/2">

@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { object, string } from "yup";
 import { toast } from "react-toastify";
-import axios from "axios";
 
-import api_urls from "../config/urls";
 import ButtonPrimary from "./misc/ButtonPrimary";
 import Label from "./misc/Label";
 import Input from "../components/misc/Input";
 import Loader from "./Layout/Loader";
+import post_request from "../config/post.request";
 
 function VerifyEmail() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -32,19 +31,17 @@ function VerifyEmail() {
       setLoaded(true);
       e.preventDefault();
       const userData = await schema.validate(formData);
-      await axios
-        .post(api_urls.resend_code, { ...userData, type: "reset-password" })
-        .then((response) => {
-            const res = response.data;
-            toast.success(res.message);
-            setTimeout(() => {
-                window.location.href = "/reset-password";
-            }, 4000);
-        })
-        .catch((error) => {
-            toast.error(error.response.data.message);
-        })
-        .finally(() => setLoaded(false));
+      await post_request.resendAuthCode(...userData, "reset-password")
+      .then((res) => {
+        toast.success(res.data.message);
+        setTimeout(() => {
+          window.location.href = "/reset-password";
+        }, 2000);           
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message)
+      })
+      .finally(() => setLoaded(false));
     } catch (err) {
       setLoaded(false);
       setErrorMessage(err.errors);

@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { object, string, ref } from "yup";
 import { toast } from "react-toastify";
-import axios from "axios";
 
-import api_urls from "../config/urls";
 import ButtonPrimary from "./misc/ButtonPrimary";
 import Label from "./misc/Label";
 import Input from "../components/misc/Input";
 import Loader from "./Layout/Loader";
+import post_request from "../config/post.request";
 
 function ResetPassword() {
   const [errorMessage, setErrorMessage] = useState("");
@@ -36,23 +35,17 @@ function ResetPassword() {
       setLoaded(true);
       e.preventDefault();
       const userData = await schema.validate(formData);
-      await axios
-        .post(api_urls.reset_password, userData)
-        .then((response) => {
-          const res = response.data;
-          if (res.status == "success") {
-            toast.success(res.message);
-            setTimeout(() => {
-              window.location.href = "/login";
-            }, 4000);
-          } else {
-            toast.error(res.message);
-          }
-        })
-        .catch((error) => {
-          toast.error(error.response.data.message);
-        })
-        .finally(() => setLoaded(false));
+      await post_request.resetPassword(userData)
+      .then((res) => {
+        toast.success(res.data.message);
+        setTimeout(() => {
+          window.location.href = "/login";
+        }, 2000);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.message)
+      })
+      .finally(() => setLoaded(false));
     } catch (err) {
       setLoaded(false);
       setErrorMessage(err.errors);
@@ -83,9 +76,6 @@ function ResetPassword() {
                   </div>
                   <hr className="mt-6 border-b-1 border-gray-400" />
                 </div>
-                {loaded ? (
-                  <Loader />
-                ) : (
                   <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                     <form onSubmit={resetUserPassword}>
                       <div className="relative w-full mb-3">
@@ -122,11 +112,12 @@ function ResetPassword() {
                         />
                       </div>
                       <div className="text-center mt-6">
+                      {loaded ?  <Loader type="button" />  : 
                         <ButtonPrimary>Reset Password</ButtonPrimary>
+                      }
                       </div>
                     </form>
                   </div>
-                )}
               </div>
               <div className="relative flex flex-wrap mt-6">
                 <div className="w-full">

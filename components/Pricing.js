@@ -4,11 +4,11 @@ import ButtonOutline from "./misc/ButtonOutline";
 import { motion } from "framer-motion";
 import getScrollAnimation from "../utils/getScrollAnimation";
 import ScrollAnimationWrapper from "./Layout/ScrollAnimationWrapper";
-import axios from "axios";
-import api_urls from "../config/urls";
 import { toast } from "react-toastify";
 import Loader from "./Layout/Loader";
 import services from "../config/services";
+import get_request from "../config/get.request";
+import post_request from "../config/post.request";
 
 const Pricing = ({ details }) => {
   const [plans, setPlans] = useState([]);
@@ -16,41 +16,31 @@ const Pricing = ({ details }) => {
 
   useEffect(async () => {
     setLoaded(true)
-    await axios
-      .get(api_urls.get_plans)
-      .then((response) => {
-        const res = response.data;
-        setPlans(res.data);
+    await get_request.getSitePlans()
+    .then((res) => {
+        setPlans(res.data.data);
       })
-      .catch((error) => {
-        toast.error(error.message);
+      .catch((err) => {
+        if(err.message = 'Network Error'){
+          toast.error(err.message)
+        }else{
+          toast.error(err.response.data.message)
+        }
       })
       .finally(() => setLoaded(false));
   }, []);
-
   const processSubscription = async (uuid) => {
     setLoaded(true)
-    const user_id = services.getSession('token');
-    const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${user_id.token}`
-    }
-    
-    await axios.post(api_urls.subscribed, {plan_id: uuid, type: "flutterwave"}, {
-      headers: headers
-    })
-    .then((response) => {
-      const res = response.data;
-      if(res.message == 'Hosted Link')
-        window.location.href = res.data.link;
-    })
-    .catch((error) => {
-      const _err = error.response.data
-      if(_err.message == "Unauthorized! Access Token was expired!"){
-        services.clearSession();
-      }
-      toast.error(_err.message);
-    })
+    await post_request.makePayment(uuid, 'flutterwave')
+      .then((res) => {
+        window.location.href = res.data.data.link;
+      })
+      .catch((err) => {
+        if(err.response.statusText == 'Unauthorized'){
+          services.clearSession();
+        }
+        toast.error(err.response.data.message)
+      })
     .finally(() => setLoaded(false));
   }
 
@@ -71,7 +61,7 @@ const Pricing = ({ details }) => {
               variants={scrollAnimation}
               className="text-2xl sm:text-3xl lg:text-4xl font-medium text-black-600 leading-relaxed"
             >
-              Achieve more with <strong>{details.name}</strong> Pro
+              Achieve more with <strong>{details ? details.name : 'N/A'}</strong> Pro
             </motion.h3>
             <motion.p
               variants={scrollAnimation}

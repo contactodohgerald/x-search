@@ -1,15 +1,14 @@
 import React, { useState } from "react";
 import { object, string } from "yup";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { motion } from "framer-motion";
 
 import ScrollAnimationWrapper from "./Layout/ScrollAnimationWrapper";
 import ButtonPrimary from "./misc/ButtonPrimary";
 import Textarea from "./misc/Textarea";
 import Loader from "./Layout/Loader";
-import api_urls from "../config/urls";
 import services from "../config/services";
+import post_request from "../config/post.request";
 
 const Generate = () => {
   const [loaded, setLoaded] = useState(false);
@@ -33,29 +32,22 @@ const Generate = () => {
     try {
       setLoaded(true);
       e.preventDefault();
-      const user_id = services.getSession('token');
-      const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user_id ? user_id.token : ''}`
-      }
 
       const queryData = await schema.validate(formData);
-      await axios
-        .post(api_urls.auth_search, queryData, {
-          headers: headers
+      const ip_address = await services.getUserIp();
+
+      await post_request.authSearch(queryData, ip_address)
+      .then((res) => {
+        toast.success(res.data.message);
+        setQuestion(res.data.data.query)
+        setAnswer(res.data.data.answer)
+        setFormData({
+          query: ""
         })
-        .then((response) => {
-          const res = response.data;
-          toast.success(res.message);
-          setQuestion(res.data.query)
-          setAnswer(res.data.answer)
-          setFormData({
-            query: ""
-          })
         })
-        .catch((error) => {
-          toast.error(error.response.data.message);
-        })
+      .catch((error) => {
+        toast.error(error.response.data.message);
+      })
       .finally(() => setLoaded(false));
     } catch (err) {
       setLoaded(false);

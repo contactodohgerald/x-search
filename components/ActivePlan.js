@@ -16,22 +16,23 @@ const ActivePlan = () => {
     useEffect(async () => {
         //get active user plan
         await get_request.getUserActivePlan()
-            .then((res) => {
-                setPlans(res.data.data)
-            })
-            .catch((err) => {
-                if(err.message = '"Network Error'){
-                    toast.error(err.message)
-                }else if(err.response.statusText == 'Unauthorized'){
-                    services.clearSession();
-                    toast.success('Please login to continue')
-                    setTimeout(() => {
-                        window.location.href = "/login";
-                    }, 2000);
-                }else{
-                    toast.error(err.response.data.message)
-                }
-            })
+        .then((res) => {
+            console.log('first', res)
+            setPlans(res.data.data)
+        })
+        .catch((err) => {
+            if(err.message == 'Network Error'){
+                toast.error(err.message)
+            }else if(err.response.statusText == 'Unauthorized'){
+                services.clearSession();
+                toast.success('Please login to continue')
+                setTimeout(() => {
+                    window.location.href = "/login";
+                }, 2000);
+            }else{
+                toast.error(err.response.data.message)
+            }
+        })
     }, []);
     return (
         <>

@@ -2,15 +2,14 @@ import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { object, string } from "yup";
 import { toast } from "react-toastify";
-import axios from "axios";
 
 import getScrollAnimation from "../utils/getScrollAnimation";
 import ScrollAnimationWrapper from "./Layout/ScrollAnimationWrapper";
 import ButtonPrimary from "./misc/ButtonPrimary";
 import Textarea from "./misc/Textarea";
 import Loader from "./Layout/Loader";
-import api_urls from "../config/urls";
 import services from "../config/services";
+import post_request from "../config/post.request";
 
 const Tryout = ({details}) => {
   const [question, setQuestion] = useState(null);
@@ -38,13 +37,11 @@ const Tryout = ({details}) => {
       const ip_address = await services.getUserIp();
      
       const queryData = await schema.validate(formData);
-      await axios
-        .post(api_urls.free_search, {...queryData, ip_address})
-        .then((response) => {
-          const res = response.data;
-          toast.success(res.message);
-          setQuestion(res.data.query)
-          setAnswer(res.data.answer)
+      await post_request.tryOutNotify({...queryData, ip_address})
+        .then((res) => {
+          toast.success(res.data.message);
+          setQuestion(res.data.data.query)
+          setAnswer(res.data.data.answer)
           setFormData({
             query: ""
           })
@@ -78,7 +75,7 @@ const Tryout = ({details}) => {
               variants={scrollAnimation}
               className="text-2xl sm:text-3xl lg:text-2xl font-medium text-black-600 leading-relaxed"
             >
-              Your First Cover Letter with <strong>{details.name}</strong>
+              Your First Cover Letter with <strong>{details ? details.name : 'N/A'}</strong>
             </motion.h3>
             <motion.p
               className="leading-normal  mx-auto my-2 w-10/12 sm:w-7/12 lg:w-6/12"
@@ -94,27 +91,23 @@ const Tryout = ({details}) => {
               className="w-6/2 justify-center ml-auto"
               variants={scrollAnimation}
             >
-              {loaded ? (
-                <div className="text-center">
-                  <Loader />
-                </div>
-              ):( 
-                <form onSubmit={generateFreeCoverLetter}>
-                  <Textarea 
-                    name="query"
-                    value={formData.query}
-                    onChange={handleChange}
-                    placeholder="E.g `write a cover letter for a customer service officer position.'" 
-                    rows="1" 
-                  />
-                  <div className="text-center mt-6">
-                    <ButtonPrimary>
-                      <span>Generate </span>
-                      <span className="font-medium text-gray-700 ml-2">➔</span>
-                    </ButtonPrimary>
-                  </div>
-                </form>
-              )}
+            <form onSubmit={generateFreeCoverLetter}>
+              <Textarea 
+                name="query"
+                value={formData.query}
+                onChange={handleChange}
+                placeholder="E.g `write a cover letter for a customer service officer position.'" 
+                rows="1" 
+              />
+              <div className="text-center mt-6">
+                {loaded ? 
+                <Loader type="button"/> : 
+                <ButtonPrimary>
+                <span>Generate </span>
+                <span className="font-medium text-gray-700 ml-2">➔</span>
+              </ButtonPrimary>}
+              </div>
+            </form>
             </motion.div>
             {!answer ? (
               <div></div>

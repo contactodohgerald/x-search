@@ -1,10 +1,8 @@
 import React, { useMemo, useState } from "react";
 import { toast } from "react-toastify";
-import axios from "axios";
 import { object, string, ref } from "yup";
 import { motion } from "framer-motion";
 
-import api_urls from "../config/urls";
 import services from "../config/services";
 import ScrollAnimationWrapper from "./Layout/ScrollAnimationWrapper";
 import getScrollAnimation from "../utils/getScrollAnimation";
@@ -12,9 +10,10 @@ import Label from "./misc/Label";
 import Input from "./misc/Input";
 import Loader from "./Layout/Loader";
 import ButtonPrimary from "./misc/ButtonPrimary";
+import post_request from "../config/post.request";
 
 const Settings = () => {
-    const [loaded, setLoaded] = useState(false);
+  const [loaded, setLoaded] = useState(false);
   const scrollAnimation = useMemo(() => getScrollAnimation(), []);
   const user_id = services.getSession('token');
   const [formData, setFormData] = useState({
@@ -38,33 +37,30 @@ const Settings = () => {
     try {
       setLoaded(true);
       e.preventDefault();
-      const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${user_id.token}`
-      }
-
       const queryData = await schema.validate(formData);
-      await axios
-        .post(api_urls.update_password, queryData, {
-          headers: headers
+      await post_request.updatePassword(queryData)
+      .then((res) => {
+        toast.success(res.data.message);
+        setFormData({
+          cur_password: "",
+          password: "",
+          c_password: "",
         })
-        .then((response) => {
-          const res = response.data;
-          toast.success(res.message);
-          setFormData({
-            cur_password: "",
-            password: "",
-            c_password: "",
-          })
-        })
-        .catch((error) => {
-          const _err = error.response.data
-          if(_err.message == "Unauthorized! Access Token was expired!"){
+      })
+      .catch((err) => {
+        if(err.message == 'Network Error'){
+            toast.error(err.message)
+        }else if(err.response.statusText == 'Unauthorized'){
             services.clearSession();
-          }
-          toast.error(_err.message);
-        })
-      .finally(() => setLoaded(false));
+            toast.success('Please login to continue')
+            setTimeout(() => {
+                window.location.href = "/login";
+            }, 2000);
+        }else{
+          toast.error(err.response.data.message)
+        }
+      })
+    .finally(() => setLoaded(false));
     } catch (err) {
       setLoaded(false);
       toast.error(err.errors[0]);
@@ -89,7 +85,7 @@ const Settings = () => {
                 className="bg-white cursor-pointer shadow rounded-lg px-5 py-2 z-30"
               >
                 <div className="items-center justify-between">
-                  <h5 className="text-1xl font-semibold leading-6">{user_id ? user_id.name : ""}</h5>
+                  <h5 className="text-1xl font-semibold leading-6">{user_id ? user_id.data.name : ""}</h5>
                   <p className="text-base leading-6">name</p>
                 </div>
               </div>
@@ -99,7 +95,7 @@ const Settings = () => {
               >
                 <div className="w-2.5 h-auto bg-orange-500 rounded-tl-md rounded-bl-md"></div>
                 <div className="items-center justify-between">
-                  <h5 className="text-1xl font-semibold leading-6">{user_id ? user_id.email : ""}</h5>
+                  <h5 className="text-1xl font-semibold leading-6">{user_id ? user_id.data.email : ""}</h5>
                   <p className="text-base leading-6">email</p>
                 </div>
               </div>
@@ -108,7 +104,7 @@ const Settings = () => {
                 className="bg-white cursor-pointer shadow rounded-lg px-5 py-2 z-30 mt-7"
               >
                 <div className="items-center justify-between">
-                  <h5 className="text-1xl font-semibold leading-6">{user_id ? user_id.username : ""}</h5>
+                  <h5 className="text-1xl font-semibold leading-6">{user_id ? user_id.data.username : ""}</h5>
                   <p className="text-base leading-6">username</p>
                 </div>
               </div>
