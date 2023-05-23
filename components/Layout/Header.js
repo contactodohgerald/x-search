@@ -100,15 +100,11 @@ const Header = () => {
             </LinkScroll>
           </ul>
           {services.getSession('isloggedin') ?  <div className="col-start-10 col-end-12 font-medium flex justify-end items-center">
-            <ButtonOutline>
-              <Link href={'/_generate'}>Generate</Link>
-            </ButtonOutline>
+            <Link href={'/_generate'}><ButtonOutline>Generate</ButtonOutline></Link>
           </div>
           :
           <div className="col-start-10 col-end-12 font-medium flex justify-end items-center">
-            <ButtonOutline>
-              <Link href={'/login'}>Login</Link>
-            </ButtonOutline>
+            <Link href={'/login'}><ButtonOutline>Login</ButtonOutline></Link>
           </div>
 }
         </nav>
