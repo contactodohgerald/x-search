@@ -116,13 +116,15 @@ const Newsletter = ({ details }) => {
       </div>
       <div className="flex-auto px-4 lg:px-10 py-10 ">
         <form className="text-left" onSubmit={subscribeToNewsLetter}>
-          <Input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email"
-          />
+          <div className="mb-3">
+            <Input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              placeholder="Email"
+            />
+          </div>
           {loaded ?  <Loader type="button" /> :
             <ButtonOutline>
               <span>Subscribe Newsletter</span>

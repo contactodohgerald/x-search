@@ -26,7 +26,7 @@ const Contact = ({ details }) => {
             </ScrollAnimationWrapper>
             <ScrollAnimationWrapper>
               <motion.div
-                className="antialiased max-w-6xl mx-auto my-12 bg-gray-300 px-8"
+                className="antialiased max-w-6xl mx-auto my-12 bg-gray-300 lg:px-8 px-0"
                 id="contact"
               >
                 <div className="relative block md:flex items-center">

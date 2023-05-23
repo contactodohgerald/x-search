@@ -62,31 +62,37 @@ const ContactUs = () => {
                 </div>
                 <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                     <form onSubmit={sendContactMail}>
-                        <Input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder="Email"
-                        />
-                        <Input
-                            type="text"
-                            name="subject"
-                            value={formData.subject}
-                            onChange={handleChange}
-                            placeholder="Subject"
-                        />
-                        <Textarea
-                            name="message"
-                            rows="1"
-                            value={formData.message}
-                            onChange={handleChange}
-                            placeholder="Message"
-                        />
+                        <div className="mb-3">
+                            <Input
+                                type="email"
+                                name="email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                placeholder="Email"
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <Input
+                                type="text"
+                                name="subject"
+                                value={formData.subject}
+                                onChange={handleChange}
+                                placeholder="Subject"
+                            />
+                        </div>
+                        <div className="mb-3">
+                            <Textarea
+                                name="message"
+                                rows="1"
+                                value={formData.message}
+                                onChange={handleChange}
+                                placeholder="Message"
+                            />
+                        </div>
                         <div className="text-center mt-6">
                         {loaded ?  <Loader type="button" /> :
                             <ButtonPrimary>
-                            <span>Subscribe Newsletter</span>
+                            <span>Contact Us</span>
                             <span className="font-medium text-gray-700 ml-2">➔</span>
                             </ButtonPrimary>
                         }

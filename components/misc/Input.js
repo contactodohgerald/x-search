@@ -2,12 +2,8 @@ import React from "react";
 
 const Input = ({ addClass, ...props }) => {
   return (
-    <input
-      className={"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" +
-        addClass
-      }
-      {...props}
-    />
+    <input 
+    className={"shadow appearance-none border rounded w-full py-3 px-4 focus:orange-blue-500 border-gray-500 text-gray-700 leading-tight focus:outline-none focus:shadow-outline "+ addClass}  {...props} />
   );
 };
 
