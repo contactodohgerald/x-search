@@ -63,6 +63,24 @@ const clearSession = () => {
     return true;
 }
 
-const services =  {getUserIp, getUrlParams, storageAvailable, setSession, getSession, clearSession}
+const download = (answer) => {
+    if (answer != "") return false
+
+    const link = document.createElement("a");
+    link.href = `data:text/plain;charset=utf-8,${encodeURIComponent(answer)}`;
+    link.download = "coverletter.pdf";
+    link.click();  
+    return true
+};
+
+const copy = (answer) => {
+    if (answer != "") return false
+    navigator.clipboard.writeText(answer);
+    return true
+};
+
+const services =  {
+    getUserIp, getUrlParams, storageAvailable, setSession, getSession, clearSession, download, copy
+}
 
 export default services;

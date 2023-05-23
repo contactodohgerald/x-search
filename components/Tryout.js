@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { object, string } from "yup";
 import { toast } from "react-toastify";
@@ -12,10 +12,12 @@ import services from "../config/services";
 import post_request from "../config/post.request";
 
 const Tryout = ({details}) => {
+
   const [question, setQuestion] = useState(null);
   const [answer, setAnswer] = useState(null);
   const scrollAnimation = useMemo(() => getScrollAnimation(), []);
   const [loaded, setLoaded] = useState(false);
+  const [userTrack, setUserTrack] = useState(0);
 
   const [formData, setFormData] = useState({
     query: "",
@@ -56,6 +58,22 @@ const Tryout = ({details}) => {
     }
   }
 
+  const getUserFreeTeir = async () => {
+    const ip_address = await services.getUserIp();
+    await post_request.getUserSearchTrack(ip_address)
+    .then((res) => {
+      setUserTrack(res.data.data)
+    })
+    .catch((error) => {
+    
+    })
+    .finally(() => setLoaded(false));
+  }
+
+  useEffect(async () => {
+    await getUserFreeTeir()
+  }, []);
+
   return (
     <div
       className="bg-orange-100 from-white-300 to-white-500 w-full py-14"
@@ -82,8 +100,8 @@ const Tryout = ({details}) => {
               variants={scrollAnimation}
             >
               Start landing that job interview with our cover letter generator,
-              type in the prompt into the search field below and let our AI
-              generate your <strong>FIRST</strong> cover letter
+             input your prompt into the search field below and our AI
+              generates your cover letter
             </motion.p>
           </ScrollAnimationWrapper>
           <ScrollAnimationWrapper>
@@ -99,6 +117,9 @@ const Tryout = ({details}) => {
                 placeholder="E.g `write a cover letter for a customer service officer position.'" 
                 rows="1" 
               />
+              <hr className="mt-3"/>
+              <motion.strong>You have used ({userTrack != 0 ? userTrack.request_count : userTrack}) out of ({details ? details.free_tier : 0}) of your free tier</motion.strong>
+              <hr/>
               <div className="text-center mt-6">
                 {loaded ? 
                 <Loader type="button"/> : 

@@ -35,10 +35,20 @@ class PostRequestServices {
     
     async tryOutNotify(query, ip_address) {
         return await axios.post(api_urls.free_search, {query, ip_address})
+    }  
+    
+    async getUserSearchTrack(ip_address) {
+        return await axios.post(api_urls.search_track, ip_address)
     }    
     
     async authSearch(query, ip_address) {
         return await axios.post(api_urls.auth_search, {query, ip_address}, {
+            headers: this.header
+        })
+    }     
+    
+    async searchHistory(ip_address) {
+        return await axios.post(api_urls.search_history, {ip_address}, {
             headers: this.header
         })
     }    

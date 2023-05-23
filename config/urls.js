@@ -11,9 +11,11 @@ const api_urls = {
     verify_payment: baseUrl+'/verify-payment',
     auth_search: baseUrl+'/search-query-auth',
     free_search: baseUrl+'/search-query-free',
+    search_track: baseUrl+'/search-track',
     update_password: baseUrl+'/auth/update-password',
     news_letter: baseUrl+'/news-letter',
     contact_us: baseUrl+'/contact-us',
+    search_history: baseUrl+'/user-search-history',
 
     //get request
     get_plans: baseUrl+'/get-plans',
