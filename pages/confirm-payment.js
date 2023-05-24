@@ -3,8 +3,8 @@ import Error from "../components/Error";
 import SeoHead from "../components/SeoHead";
 import Success from "../components/Success";
 import services from "../config/services";
-import axios from "axios";
-import api_urls from "../config/urls";
+import { injectStyle } from "react-toastify/dist/inject-style";
+import post_request from "../config/post.request";
 
 
 export default function confirmPayment() {
@@ -13,27 +13,23 @@ export default function confirmPayment() {
     const status = services.getUrlParams("status");
     const tx_ref = services.getUrlParams("tx_ref");
     const transaction_id = services.getUrlParams("transaction_id");
-    const user_id = services.getSession('token');
 
-    
+    const verifyUserPayment = async (status, tx_ref, transaction_id) => {
+        setLoaded(true) 
+        await post_request.verifyPayment(status, tx_ref, transaction_id)
+        .then((res) => {
+            setMessage(res,data.message);
+        })
+        .catch((err) => {
+            setMessage(err.response.data.message);
+        })
+        .finally(() => setLoaded(false));
+    }
 
     useEffect(async () => {
-        setLoaded(true)
-        const headers = {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${user_id.token}`
-        }
+        injectStyle()
 
-        await axios
-          .post(api_urls.verify_payment, {status, tx_ref, transaction_id}, {headers: headers})
-          .then((response) => {
-            const res = response.data;
-            setMessage(res.message);
-          })
-          .catch((error) => {
-            setMessage(error.message);
-          })
-          .finally(() => setLoaded(false));
+        await verifyUserPayment(status, tx_ref, transaction_id);
     }, []);
 
     return (

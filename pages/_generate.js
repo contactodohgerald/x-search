@@ -4,10 +4,15 @@ import History from "../components/History";
 import Settings from "../components/Settings";
 import AuthLayout from "../components/Layout/AuthLayout";
 import SeoHead from "../components/SeoHead";
-import services from "../config/services";
+
+import { injectStyle } from "react-toastify/dist/inject-style";
+import { useEffect } from "react";
 
 export default function generate() {
-  const user_id = services.getSession('token');
+  useEffect(() => {
+    injectStyle();
+  })
+
   return (
     <>
       <SeoHead title="X-Search : Generate Cover Letter" />

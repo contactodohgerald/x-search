@@ -65,6 +65,12 @@ class PostRequestServices {
         return await axios.post(api_urls.subscribed, {plan_id, type}, {
             headers: this.header
         })
+    } 
+    
+    async verifyPayment(status, tx_ref, transaction_id) {
+        return await axios.post(api_urls.verify_payment, {status, tx_ref, transaction_id}, {
+            headers: this.header
+        })
     }
     
     async updatePassword(data) {
