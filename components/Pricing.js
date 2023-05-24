@@ -8,7 +8,7 @@ import Loader from "./Layout/Loader";
 import services from "../config/services";
 import get_request from "../config/get.request";
 import post_request from "../config/post.request";
-import toaster from "../config/toaster";
+import { toast } from "react-toastify";
 
 const Pricing = ({ details }) => {
   const [plans, setPlans] = useState([]);
@@ -22,9 +22,9 @@ const Pricing = ({ details }) => {
       })
       .catch((err) => {
         if(err.message = 'Network Error'){
-          toaster(err.message, 'error')
+          toast.error(err.message)
         }else{
-          toaster(err.response.data.message, 'error')
+          toast.error(err.response.data.message)
         }
       })
       .finally(() => setLoaded(false));
@@ -39,13 +39,13 @@ const Pricing = ({ details }) => {
         if(err.response.statusText == 'Unauthorized'){
           services.clearSession();
         }
-        toaster(err.response.data.message, 'error')
+        toast.error(err.response.data.message)
       })
     .finally(() => setLoaded(false));
   }
 
   const notifyUser = () => {
-    toaster("Login to continue!", 'error')
+    toast.warning("Login to continue!");
   }
 
   const scrollAnimation = useMemo(() => getScrollAnimation(), []);

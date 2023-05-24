@@ -3,7 +3,6 @@ import "../styles/slick.css";
 import 'react-toastify/dist/ReactToastify.css';
 
 import { ToastContainer, Slide } from 'react-toastify';
-import "vercel-toast/css";
 
 function MyApp({ Component, pageProps }) {
   return <>
@@ -20,6 +19,7 @@ function MyApp({ Component, pageProps }) {
         draggable={false}
         pauseOnHover
         transition={Slide}
+        theme="dark"
       />
   </>
 }

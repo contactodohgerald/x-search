@@ -1831,11 +1831,6 @@
   "resolved" "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz"
   "version" "1.0.2"
 
-"vercel-toast@^1.7.1":
-  "integrity" "sha512-FHXPwQV5Flk1hMG0edCIXwP7t7+wq0pvtOCx7SP/0CU477qCTkhGqK9Nk7DjswhfU/SITia8numaxnvKYCRfng=="
-  "resolved" "https://registry.npmjs.org/vercel-toast/-/vercel-toast-1.7.1.tgz"
-  "version" "1.7.1"
-
 "wrappy@1":
   "integrity" "sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ=="
   "resolved" "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz"
