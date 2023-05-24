@@ -11,23 +11,27 @@ import FAQ from "../components/FAQ";
 import get_request from "../config/get.request";
 import services from "../config/services";
 
+import { injectStyle } from "react-toastify/dist/inject-style";
+
 export default function Home() {
   const [sitedetails, setSitedetails] = useState(null)
 
   useEffect(async () => {
-      await get_request.getSiteDetails()
-        .then((res) => { 
-            services.setSession("sitedetails", JSON.stringify(res.data.data));
-            const _details =  services.getSession('sitedetails')
-            setSitedetails(_details)
-        })
-        .catch((err) => {
-          if(err.message = 'Network Error'){
-            toast.error(err.message)
-          }else{
-            toast.error(err.response.data.message)
-          }
-        })
+    injectStyle();
+    
+    await get_request.getSiteDetails()
+      .then((res) => { 
+          services.setSession("sitedetails", JSON.stringify(res.data.data));
+          const _details =  services.getSession('sitedetails')
+          setSitedetails(_details)
+      })
+      .catch((err) => {
+        if(err.message = 'Network Error'){
+          toast.error(err.message)
+        }else{
+          toast.error(err.response.data.message)
+        }
+      })
   }, []);
 
   return (

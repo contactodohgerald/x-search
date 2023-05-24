@@ -1,6 +1,5 @@
 import "../styles/tailwind.css";
 import "../styles/slick.css";
-import 'react-toastify/dist/ReactToastify.css';
 
 import { ToastContainer, Slide } from 'react-toastify';
 
