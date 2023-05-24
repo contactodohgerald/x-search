@@ -4,11 +4,11 @@ import ButtonOutline from "./misc/ButtonOutline";
 import { motion } from "framer-motion";
 import getScrollAnimation from "../utils/getScrollAnimation";
 import ScrollAnimationWrapper from "./Layout/ScrollAnimationWrapper";
-import { toast } from "react-toastify";
 import Loader from "./Layout/Loader";
 import services from "../config/services";
 import get_request from "../config/get.request";
 import post_request from "../config/post.request";
+import toaster from "../config/toaster";
 
 const Pricing = ({ details }) => {
   const [plans, setPlans] = useState([]);
@@ -22,9 +22,9 @@ const Pricing = ({ details }) => {
       })
       .catch((err) => {
         if(err.message = 'Network Error'){
-          toast.error(err.message)
+          toaster(err.message, 'error')
         }else{
-          toast.error(err.response.data.message)
+          toaster(err.response.data.message, 'error')
         }
       })
       .finally(() => setLoaded(false));
@@ -39,13 +39,13 @@ const Pricing = ({ details }) => {
         if(err.response.statusText == 'Unauthorized'){
           services.clearSession();
         }
-        toast.error(err.response.data.message)
+        toaster(err.response.data.message, 'error')
       })
     .finally(() => setLoaded(false));
   }
 
   const notifyUser = () => {
-    toast.error("Login to continue!");
+    toaster("Login to continue!", 'error')
   }
 
   const scrollAnimation = useMemo(() => getScrollAnimation(), []);
