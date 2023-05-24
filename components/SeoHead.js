@@ -8,13 +8,11 @@ const defaultMeta = {
   description:
     "x-search stives to solves the issue of generating cover letter to smotten your job hunt accross different industries",
   // change base url of your web (without '/' at the end)
-  url: "https://f-search.com",
+  url: "https://x-search-eight.vercel.app/",
   type: "website",
   robots: "follow, index",
-  // change with url of your image (recommended dimension = 1.91:1)
-  // used in twitter, facebook, etc. card when link copied in tweet/status
-  image: "https://next-landing-vpn.vercel.app/assets/card-image.png",
-  author: "Xanta Codes",
+  image: "https://contactxanta.com/images/x-search/Logo.svg",
+  author: "xanta-codes",
 };
 
 const SeoHead = (props) => {
