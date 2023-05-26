@@ -39,7 +39,7 @@ const Tryout = ({details}) => {
       const ip_address = await services.getUserIp();
      
       const queryData = await schema.validate(formData);
-      await post_request.tryOutNotify({...queryData, ip_address})
+      await post_request.tryOutNotify({queryData, ip_address})
         .then((res) => {
           toast.success(res.data.message);
           setQuestion(res.data.data.query)
