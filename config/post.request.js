@@ -38,7 +38,7 @@ class PostRequestServices {
     }  
     
     async getUserSearchTrack(ip_address) {
-        return await axios.post(api_urls.search_track, ip_address)
+        return await axios.post(api_urls.search_track, {ip_address})
     }    
     
     async authSearch(query, ip_address) {

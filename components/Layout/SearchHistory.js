@@ -58,7 +58,7 @@ function SearchHistory() {
             }
           })
     }, []);
-
+console.log('first', history)
     return (
         <>
         <ScrollAnimationWrapper>
@@ -80,9 +80,9 @@ function SearchHistory() {
             : 
                 <Tabs value="html" orientation="vertical">
                     <TabsHeader className="lg:w-80 w-32">
-                    {history.map(({ question, _id }) => (
+                    {history.map(({ query, _id }) => (
                         <Tab key={_id} value={_id} className="border border-grey-500 hover:bg-orange-100 rounded-l-full rounded-r-full">
-                            {question.length > 10 ? `${question.substring(0, 10)}....` : question }
+                            {query.length > 10 ? `${query.substring(0, 10)}....` : query }
                         </Tab>
                     ))}
                     </TabsHeader>

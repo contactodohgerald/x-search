@@ -10,6 +10,8 @@ import Textarea from "./misc/Textarea";
 import Loader from "./Layout/Loader";
 import services from "../config/services";
 import post_request from "../config/post.request";
+import CopyIcon from "./misc/CopyIcon";
+import DownloadIcon from "./misc/DownloadIcon";
 
 const Tryout = ({details}) => {
 
@@ -37,12 +39,12 @@ const Tryout = ({details}) => {
       setLoaded(true);
       e.preventDefault();
       const ip_address = await services.getUserIp();
-     
       const queryData = await schema.validate(formData);
-      await post_request.tryOutNotify(queryData, ip_address)
+      await post_request.tryOutNotify(queryData.query, ip_address)
         .then((res) => {
           toast.success(res.data.message);
           setQuestion(res.data.data.query)
+          setAnswer("")
           setAnswer(res.data.data.answer)
           setFormData({
             query: ""
@@ -73,6 +75,24 @@ const Tryout = ({details}) => {
   useEffect(async () => {
     await getUserFreeTeir()
   }, []);
+
+  const copyPrompt = () => {
+    setLoaded(true);
+    const response = services.copy(answer)
+    if(response){
+      toast.success("copied!");   
+    }
+    setLoaded(false);
+  };
+
+  const downloadPrompt = () => {
+    setLoaded(true);
+    const response = services.download(answer)
+    if(response){
+      toast.success("downloaded!");   
+    }
+    setLoaded(false);
+  };
 
   return (
     <div
@@ -135,10 +155,18 @@ const Tryout = ({details}) => {
             ):( 
               <motion.div className="mt-5">
                 <div className="text-left italic"><strong>~ {question}</strong></div>
-                <Textarea 
-                    rows="17" 
-                    defaultValue={answer} 
+                <div className="static">
+                  <div class="absolute right-10 lg:right-60 flex space-x-2">
+                    {loaded ?  <Loader type="button" /> : <>
+                        <CopyIcon onClick={copyPrompt} />
+                        <DownloadIcon onClick={downloadPrompt} />
+                    </>}
+                  </div>
+                  <Textarea 
+                      rows="17" 
+                      defaultValue={answer} 
                   />
+                </div>
               </motion.div>
             )}
           </ScrollAnimationWrapper>

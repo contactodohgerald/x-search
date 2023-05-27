@@ -43,6 +43,7 @@ const Generate = () => {
         .then((res) => {
           toast.success(res.data.message);
           setQuestion(res.data.data.query);
+          setAnswer("")
           setAnswer(res.data.data.answer);
           setFormData({
             query: "",
@@ -131,7 +132,7 @@ const Generate = () => {
                             rows="20"
                             defaultValue={answer}
                           />
-                          <div class="absolute lg:top-40 top-80 right-12 flex space-x-2">
+                          <div className="absolute lg:top-40 top-80 right-12 flex space-x-2">
                           {loaded ?  <Loader type="button" /> : <>
                               <CopyIcon onClick={copyPrompt} />
                               <DownloadIcon onClick={downloadPrompt} />
