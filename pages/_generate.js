@@ -22,7 +22,7 @@ export default function generate() {
 
   return (
     <>
-      <SeoHead title="X-Search : Generate Cover Letter" />
+      <SeoHead title="X-Search : Revolutionizing Cover Letter Generation with AI" />
       <AuthLayout>
           <Generate />
           <ActivePlan />

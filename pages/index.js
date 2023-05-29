@@ -36,7 +36,7 @@ export default function Home() {
 
   return (
     <>
-      <SeoHead title={sitedetails ? sitedetails.name : ""} />
+      <SeoHead title="X-Search : Revolutionizing Cover Letter Generation with AI" />
       <Layout>
         <About details={sitedetails} />
         <Feature />
