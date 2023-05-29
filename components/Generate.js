@@ -60,21 +60,17 @@ const Generate = () => {
   };
 
   const copyPrompt = () => {
-    setLoaded(true);
     const response = services.copy(answer)
     if(response){
       toast.success("copied!");   
     }
-    setLoaded(false);
   };
 
   const downloadPrompt = () => {
-    setLoaded(true);
     const response = services.download(answer)
     if(response){
       toast.success("downloaded!");   
     }
-    setLoaded(false);
   };
 
   return (
@@ -133,10 +129,8 @@ const Generate = () => {
                             defaultValue={answer}
                           />
                           <div className="absolute lg:top-40 top-80 right-12 flex space-x-2">
-                          {loaded ?  <Loader type="button" /> : <>
-                              <CopyIcon onClick={copyPrompt} />
-                              <DownloadIcon onClick={downloadPrompt} />
-                          </>}
+                            <CopyIcon onClick={copyPrompt} />
+                            <DownloadIcon onClick={downloadPrompt} />
                           </div>
                         </div>
                       </div>

@@ -76,21 +76,17 @@ const Tryout = ({details}) => {
   }, []);
 
   const copyPrompt = () => {
-    setLoaded(true);
     const response = services.copy(answer)
     if(response){
       toast.success("copied!");   
     }
-    setLoaded(false);
   };
 
   const downloadPrompt = () => {
-    setLoaded(true);
     const response = services.download(answer)
     if(response){
       toast.success("downloaded!");   
     }
-    setLoaded(false);
   };
 
   return (
@@ -156,10 +152,8 @@ const Tryout = ({details}) => {
                 <div className="text-left italic"><strong>~ {question}</strong></div>
                 <div className="static">
                   <div class="absolute right-10 lg:right-60 flex space-x-2">
-                    {loaded ?  <Loader type="button" /> : <>
-                        <CopyIcon onClick={copyPrompt} />
-                        <DownloadIcon onClick={downloadPrompt} />
-                    </>}
+                    <CopyIcon onClick={copyPrompt} />
+                    <DownloadIcon onClick={downloadPrompt} />
                   </div>
                   <Textarea 
                       rows="17" 
