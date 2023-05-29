@@ -54,7 +54,7 @@ function Register() {
         });
         toast.success(res.data.message);
         setTimeout(() => {
-          window.location.href = "/verify-auth?uuid=" + res.data.data.uuid;
+          window.location.href = "/verify-auth?uuid=" + res.data.data._id;
         }, 2000);
       })
       .catch((err) => {
