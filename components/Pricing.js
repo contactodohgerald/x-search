@@ -29,23 +29,25 @@ const Pricing = ({ details }) => {
       })
       .finally(() => setLoaded(false));
   }, []);
-  const processSubscription = async (uuid) => {
-    setLoaded(true)
-    await post_request.makePayment(uuid, 'flutterwave')
-      .then((res) => {
-        window.location.href = res.data.data.link;
-      })
-      .catch((err) => {
-        if(err.response.statusText == 'Unauthorized'){
-          services.clearSession();
-        }
-        toast.error(err.response.data.message)
-      })
-    .finally(() => setLoaded(false));
-  }
 
-  const notifyUser = () => {
-    toast.warning("Login to continue!");
+  const processSubscription = async (uuid) => {
+    const isLoggedIn = services.getSession('isloggedin');
+    if (isLoggedIn) {
+      setLoaded(true)
+      await post_request.makePayment(uuid, 'flutterwave')
+        .then((res) => {
+          window.location.href = res.data.data.link;
+        })
+        .catch((err) => {
+          if(err.response.statusText == 'Unauthorized'){
+            services.clearSession();
+          }
+          toast.error(err.response.data.message)
+        })
+      .finally(() => setLoaded(false));
+    } else {
+      toast.warning("Login to continue!");
+    }
   }
 
   const scrollAnimation = useMemo(() => getScrollAnimation(), []);
@@ -70,9 +72,7 @@ const Pricing = ({ details }) => {
               Choose the plan that is best for you and explore it happily.
             </motion.p>
           </ScrollAnimationWrapper>
-          {loaded ? (
-              <Loader />
-          ) : (
+        
             <div className="grid grid-flow-row sm:grid-flow-col grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-12 py-8 lg:py-12 px-6 sm:px-0 lg:px-6">
               {plans.map((plan, index) => (
                 <div key={index} className="flex flex-col justify-center items-center border-2 border-gray-500 rounded-xl  xl:px-20">
@@ -105,16 +105,13 @@ const Pricing = ({ details }) => {
                     <p className="text-2xl text-black-600 text-center mb-4 ">
                       {plan.amount} NGN
                     </p>
-                    {services.getSession('isloggedin') ? (
+                    {loaded ?  <Loader type="button" />  : 
                       <ButtonOutline onClick={() => processSubscription(plan._id)}>Subscribe</ButtonOutline>
-                    ):(
-                      <ButtonOutline onClick={notifyUser}>Subscribe</ButtonOutline>
-                    )}
+                    }
                   </div>
                 </div>
               ) )}
             </div>
-          )}
         </div>
       </div>
     </div>

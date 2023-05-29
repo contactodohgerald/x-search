@@ -6,11 +6,18 @@ import AuthLayout from "../components/Layout/AuthLayout";
 import SeoHead from "../components/SeoHead";
 
 import { injectStyle } from "react-toastify/dist/inject-style";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import services from "../config/services";
+import Pricing from "../components/Pricing";
 
 export default function generate() {
+  const [sitedetails, setSitedetails] = useState(null)
+
   useEffect(() => {
     injectStyle();
+
+    const _details =  services.getSession('sitedetails')
+    setSitedetails(_details)
   })
 
   return (
@@ -19,6 +26,7 @@ export default function generate() {
       <AuthLayout>
           <Generate />
           <ActivePlan />
+          <Pricing details={sitedetails} />
           <History />
           <Settings />
       </AuthLayout>
