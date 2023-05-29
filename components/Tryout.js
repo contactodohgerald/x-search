@@ -69,7 +69,6 @@ const Tryout = ({details}) => {
     .catch((error) => {
     
     })
-    .finally(() => setLoaded(false));
   }
 
   useEffect(async () => {

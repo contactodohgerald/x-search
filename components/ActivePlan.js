@@ -8,13 +8,14 @@ import ScrollAnimationWrapper from "./Layout/ScrollAnimationWrapper";
 import getScrollAnimation from "../utils/getScrollAnimation";
 import get_request from "../config/get.request";
 import services from "../config/services";
+import post_request from "../config/post.request";
 
 const ActivePlan = () => {
     const [plans, setPlans] = useState(null);
     const scrollAnimation = useMemo(() => getScrollAnimation(), []);
+    const [userTrack, setUserTrack] = useState(0);
 
-    useEffect(async () => {
-        //get active user plan
+    const getUserCurrentPlan = async () => {
         await get_request.getUserActivePlan()
         .then((res) => {
             setPlans(res.data.data)
@@ -32,7 +33,25 @@ const ActivePlan = () => {
                 toast.error(err.response.data.message)
             }
         })
+    }
+
+    const getUserFreeTeir = async () => {
+        const ip_address = await services.getUserIp();
+        await post_request.getUserSearchTrack(ip_address)
+        .then((res) => {
+          setUserTrack(res.data.data)
+        })
+        .catch((err) => {
+            console.error(err.response.data.message)
+        })
+    }
+
+    useEffect(async () => {
+        //get active user plan
+        await getUserCurrentPlan()  
+        await getUserFreeTeir()    
     }, []);
+
     return (
         <>
             <ScrollAnimationWrapper>
@@ -44,12 +63,13 @@ const ActivePlan = () => {
                                     <div aria-hidden="true" className="absolute top-0 w-full h-full rounded-2xl bg-white shadow-xl transition duration-500 group-hover:scale-105 lg:group-hover:scale-110"></div>
                                     <div className="relative p-6 space-y-6 lg:p-8">
                                         <h3 className="text-2xl text-gray-600 font-semibold text-center">
-                                            {plans ? plans.name : ""} Plan</h3>
+                                            {plans ? plans.active_plan.name : ""} Plan
+                                        </h3>
                                         <div>
                                             <div className="relative flex justify-around">
                                                 <div className="flex items-end">
                                                     <span className="text-6xl text-gray-800 font-bold leading-0">
-                                                        {plans ? plans.getActivePlan.amount : ""} 
+                                                        {plans ? plans.active_plan.amount : ""} 
                                                     </span>
                                                     <div className="pb-2">
                                                         <span className="block text-xl text-purple-500 font-bold">NGN</span>
@@ -79,12 +99,13 @@ const ActivePlan = () => {
                                                 Works on All Devices
                                             </li>
                                             <li className="relative check custom-list my-2">
-                                                Number of Request Tier <strong>{plans ? plans.getActivePlan.total_request : ""} </strong>
+                                                Number of Request Tier <strong>{plans ? plans.active_plan.total_request : ""} </strong>
                                             </li>
                                         </ul>
                                         <hr/>
                                         <h3 className="text-2xl text-gray-600 font-semibold mt-5">Payment</h3>
-                                        <p className="text-gray-700">Your last subscription was on the <strong>{plans ? moment(plans.created_at).format("DD/MM/YYYY") : ""}</strong>, and the remaining tier is <strong>{plans ? parseInt(plans.getActivePlan.total_request - plans.getSearchTrack.request_count) : ""}</strong> </p>
+                                        <p className="text-gray-700">Your last subscription was on the <strong>{moment(plans.active_plan.created_at).format("DD/MM/YYYY")}</strong>, and your remaining tier is <strong>{parseInt(plans.active_plan.total_request) - parseInt(userTrack != 0 ? userTrack.request_count : userTrack)}</strong> 
+                                        </p>
                                     </div>
                                 </div>
                             </div>
