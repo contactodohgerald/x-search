@@ -50,15 +50,15 @@ function SearchHistory() {
           })
           .catch((err) => {
             if(err.message =='Network Error'){
-                toast.error(err.message)
+                console.error('Network Error', err.message)
             }else if(err.response.statusText == 'Bad Request'){
-                toast.error(err.response.data.message)
+                console.error('Bad Request', err.response.data.message)
             }else{
-                toast.error(err.response.data.message)
+                console.info('error info', err.response.data.message)
             }
           })
     }, []);
-console.log('first', history)
+
     return (
         <>
         <ScrollAnimationWrapper>

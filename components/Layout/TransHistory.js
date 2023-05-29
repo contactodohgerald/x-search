@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
 import moment from "moment/moment";
-import { toast } from "react-toastify";
 import { motion } from "framer-motion";
 
 import ScrollAnimationWrapper from "./ScrollAnimationWrapper";
@@ -20,9 +19,11 @@ function TransHistory() {
           })
           .catch((err) => {
             if(err.message =='Network Error'){
-              toast.error(err.message)
+              console.error('Network Error', err.message)
             }else if(err.response.statusText == 'Bad Request'){
-              toast.error(err.response.data.message)
+              console.error('Bad Request', err.response.data.message)
+            }else{
+              console.info('error info', err.response.data.message)
             }
           })
     }, []);

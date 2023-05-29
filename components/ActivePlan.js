@@ -17,7 +17,6 @@ const ActivePlan = () => {
         //get active user plan
         await get_request.getUserActivePlan()
         .then((res) => {
-            console.log('first', res)
             setPlans(res.data.data)
         })
         .catch((err) => {
