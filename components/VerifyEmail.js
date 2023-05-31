@@ -31,7 +31,7 @@ function VerifyEmail() {
       setLoaded(true);
       e.preventDefault();
       const userData = await schema.validate(formData);
-      await post_request.resendAuthCode(...userData, "reset-password")
+      await post_request.resendAuthCode(userData, "reset-password")
       .then((res) => {
         toast.success(res.data.message);
         setTimeout(() => {
@@ -71,9 +71,6 @@ function VerifyEmail() {
                   </div>
                   <hr className="mt-6 border-b-1 border-gray-400" />
                 </div>
-                {loaded ? (
-                  <Loader />
-                ) : (
                   <div className="flex-auto px-4 lg:px-10 py-10 pt-0">
                     <form onSubmit={sendUserToken}>
                       <div className="relative w-full mb-3">
@@ -88,11 +85,12 @@ function VerifyEmail() {
                         />
                       </div>
                       <div className="text-center mt-6">
+                      {loaded ?   <Loader type="button" /> : 
                         <ButtonPrimary>Next</ButtonPrimary>
+                      }
                       </div>
                     </form>
                   </div>
-                )}
               </div>
               <div className="relative flex flex-wrap mt-6">
                 <div className="w-full">
