@@ -31,7 +31,7 @@ function VerifyEmail() {
       setLoaded(true);
       e.preventDefault();
       const userData = await schema.validate(formData);
-      await post_request.resendAuthCode(userData, "reset-password")
+      await post_request.resendAuthCode(userData.user_id, "reset-password")
       .then((res) => {
         toast.success(res.data.message);
         setTimeout(() => {
