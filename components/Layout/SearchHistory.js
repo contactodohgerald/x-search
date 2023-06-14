@@ -15,8 +15,8 @@ import CopyIcon from "../misc/CopyIcon";
 import DownloadIcon from "../misc/DownloadIcon";
 import Loader from "./Loader";
 import services from "../../config/services";
-import post_request from "../../config/post.request";
 import { toast } from "react-toastify";
+import get_request from "../../config/get.request";
 
 
 function SearchHistory() {
@@ -43,19 +43,12 @@ function SearchHistory() {
     };
 
     useEffect(async () => {
-        const ip_address = await services.getUserIp();
-        await post_request.searchHistory(ip_address)
+        await get_request.searchHistory()
           .then((res) => {
               setHistory(res.data.data);
           })
           .catch((err) => {
-            if(err.message =='Network Error'){
-                console.error('Network Error', err.message)
-            }else if(err.response.statusText == 'Bad Request'){
-                console.error('Bad Request', err.response.data.message)
-            }else{
-                console.info('error info', err.response.data.message)
-            }
+            console.info('error info', err.response.data.message)
           })
     }, []);
 

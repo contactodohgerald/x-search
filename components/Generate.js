@@ -7,7 +7,7 @@ import ScrollAnimationWrapper from "./Layout/ScrollAnimationWrapper";
 import ButtonPrimary from "./misc/ButtonPrimary";
 import Textarea from "./misc/Textarea";
 import Loader from "./Layout/Loader";
-import services from "../config/services";
+import { copy, download } from "../config/services";
 import post_request from "../config/post.request";
 import CopyIcon from "./misc/CopyIcon";
 import DownloadIcon from "./misc/DownloadIcon";
@@ -36,10 +36,9 @@ const Generate = () => {
       e.preventDefault();
 
       const queryData = await schema.validate(formData);
-      const ip_address = await services.getUserIp();
 
       await post_request
-        .authSearch(queryData, ip_address)
+        .authSearch(queryData)
         .then((res) => {
           toast.success(res.data.message);
           setQuestion(res.data.data.query);
@@ -60,14 +59,14 @@ const Generate = () => {
   };
 
   const copyPrompt = () => {
-    const response = services.copy(answer)
+    const response = copy(answer)
     if(response){
       toast.success("copied!");   
     }
   };
 
   const downloadPrompt = () => {
-    const response = services.download(answer)
+    const response = download(answer)
     if(response){
       toast.success("downloaded!");   
     }

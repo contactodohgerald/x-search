@@ -1,8 +1,8 @@
 import axios from "axios";
 import api_urls from "./urls";
-import services from "./services";
+import { getSession } from "./services";
 
-const _response =  services.getSession('token')
+const _response =  getSession('token')
 
 class PostRequestServices {
 
@@ -33,25 +33,15 @@ class PostRequestServices {
         return await axios.post(api_urls.reset_password, data)
     }  
     
-    async tryOutNotify(query, ip_address) {
-        return await axios.post(api_urls.free_search, {query, ip_address})
+    async tryOutNotify(query) {
+        return await axios.post(api_urls.free_search, {query})
     }  
     
-    async getUserSearchTrack(ip_address) {
-        return await axios.post(api_urls.search_track, {ip_address})
-    }    
-    
-    async authSearch(query, ip_address) {
-        return await axios.post(api_urls.auth_search, {query, ip_address}, {
+    async authSearch(query) {
+        return await axios.post(api_urls.auth_search, {query}, {
             headers: this.header
         })
-    }     
-    
-    async searchHistory(ip_address) {
-        return await axios.post(api_urls.search_history, {ip_address}, {
-            headers: this.header
-        })
-    }    
+    }
     
     async contactUs(data) {
         return await axios.post(api_urls.contact_us, data)

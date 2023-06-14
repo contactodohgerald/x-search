@@ -7,12 +7,12 @@ import Label from "./misc/Label";
 import Input from "../components/misc/Input";
 import Link from "next/link";
 import ButtonOutline from "./misc/ButtonOutline";
-import services from "../config/services";
+import { getUrlParams } from "../config/services";
 import Loader from "./Layout/Loader";
 import post_request from "../config/post.request";
 
 function VerifyAuth() {
-  const user_id = services.getUrlParams("uuid");
+  const user_id = getUrlParams("uuid");
   const [errorMessage, setErrorMessage] = useState("");
   const [loaded, setLoaded] = useState(false);
 

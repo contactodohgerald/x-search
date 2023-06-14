@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import { object, string, ref } from "yup";
 import { motion } from "framer-motion";
 
-import services from "../config/services";
+import { clearSession, getSession } from "../config/services";
 import ScrollAnimationWrapper from "./Layout/ScrollAnimationWrapper";
 import getScrollAnimation from "../utils/getScrollAnimation";
 import Label from "./misc/Label";
@@ -15,7 +15,7 @@ import post_request from "../config/post.request";
 const Settings = () => {
   const [loaded, setLoaded] = useState(false);
   const scrollAnimation = useMemo(() => getScrollAnimation(), []);
-  const user_id = services.getSession('token');
+  const user_id = getSession('token');
   const [formData, setFormData] = useState({
     cur_password: "",
     password: "",
@@ -51,7 +51,7 @@ const Settings = () => {
         if(err.message == 'Network Error'){
             toast.error(err.message)
         }else if(err.response.statusText == 'Unauthorized'){
-            services.clearSession();
+            clearSession();
             toast.success('Please login to continue')
             setTimeout(() => {
                 window.location.href = "/login";

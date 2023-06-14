@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 import Label from "./misc/Label";
 import Input from "../components/misc/Input";
 import ButtonPrimary from "./misc/ButtonPrimary";
-import services from "../config/services";
 import Loader from "./Layout/Loader";
 import post_request from "../config/post.request";
 
@@ -40,10 +39,8 @@ function Register() {
     try {
       setLoaded(true);
       e.preventDefault();
-      const user = await registerSchema.validate(formData);
-      const ip_address = await services.getUserIp();
-      const data_request = {...user, ip_address}
-      await post_request.registerUser(data_request)
+      const user = await registerSchema.validate(formData);     
+      await post_request.registerUser(user)
       .then((res) => {
         setFormData({
           fullname: "",

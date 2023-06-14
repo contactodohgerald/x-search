@@ -1,8 +1,8 @@
 import axios from "axios";
 import api_urls from "./urls";
-import services from "./services";
+import { getSession } from "./services";
 
-const _response =  services.getSession('token')
+const _response =  getSession('token')
 
 class GetRequestServices {
 
@@ -19,6 +19,16 @@ class GetRequestServices {
             headers: this.header
         })
     }
+
+    async getUserSearchTrack() {
+        return await axios.get(api_urls.search_track)
+    }  
+
+    async searchHistory() {
+        return await axios.get(api_urls.search_history, {
+            headers: this.header
+        })
+    }    
 
     //get transaction details for users
     async getUserTransHistory() {

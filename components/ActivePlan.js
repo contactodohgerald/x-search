@@ -7,8 +7,7 @@ import ButtonOutline from "./misc/ButtonOutline";
 import ScrollAnimationWrapper from "./Layout/ScrollAnimationWrapper";
 import getScrollAnimation from "../utils/getScrollAnimation";
 import get_request from "../config/get.request";
-import services from "../config/services";
-import post_request from "../config/post.request";
+import { clearSession } from "../config/services";
 
 const ActivePlan = () => {
     const [plans, setPlans] = useState(null);
@@ -24,7 +23,7 @@ const ActivePlan = () => {
             if(err.message == 'Network Error'){
                 toast.error(err.message)
             }else if(err.response.statusText == 'Unauthorized'){
-                services.clearSession();
+                clearSession();
                 toast.success('Please login to continue')
                 setTimeout(() => {
                     window.location.href = "/login";
@@ -36,8 +35,7 @@ const ActivePlan = () => {
     }
 
     const getUserFreeTeir = async () => {
-        const ip_address = await services.getUserIp();
-        await post_request.getUserSearchTrack(ip_address)
+        await get_request.getUserSearchTrack()
         .then((res) => {
           setUserTrack(res.data.data)
         })
@@ -47,7 +45,6 @@ const ActivePlan = () => {
     }
 
     useEffect(async () => {
-        //get active user plan
         await getUserCurrentPlan()  
         await getUserFreeTeir()    
     }, []);

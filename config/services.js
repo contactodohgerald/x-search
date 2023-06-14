@@ -1,12 +1,5 @@
-import axios from "axios";
 
-const getUserIp = async () => {
-    const res = await axios.get("https://api.ipify.org/?format=json");
-
-    return res.data.ip;
-}
-
-const getUrlParams = query => {
+export const getUrlParams = query => {
     if(typeof window !== 'undefined'){
         const queryString = window.location.search;
         const urlParams = new URLSearchParams(queryString);
@@ -15,7 +8,7 @@ const getUrlParams = query => {
     }
 }
 
-const storageAvailable = type => {
+export const storageAvailable = type => {
     let storage;
     try {
       storage = window[type];
@@ -42,28 +35,28 @@ const storageAvailable = type => {
     }
 }
   
-const setSession = (key, value) => {
+export const setSession = (key, value) => {
     if(typeof window !== 'undefined'){
         window.sessionStorage.setItem(key, value);
     }
     return true;
 }
 
-const getSession = (key) => {
+export const getSession = (key) => {
     if(typeof window !== 'undefined'){
         const respond = window.sessionStorage.getItem(key);
         return JSON.parse(respond);
     } 
 }
 
-const clearSession = () => {
+export const clearSession = () => {
     if(typeof window !== 'undefined'){
         window.sessionStorage.clear();
     }
     return true;
 }
 
-const download = (answer) => {
+export const download = (answer) => {
     if (answer != "") return false
 
     const link = document.createElement("a");
@@ -73,14 +66,8 @@ const download = (answer) => {
     return true
 };
 
-const copy = (answer) => {
+export const copy = (answer) => {
     if (answer != "") return false
     navigator.clipboard.writeText(answer);
     return true
 };
-
-const services =  {
-    getUserIp, getUrlParams, storageAvailable, setSession, getSession, clearSession, download, copy
-}
-
-export default services;

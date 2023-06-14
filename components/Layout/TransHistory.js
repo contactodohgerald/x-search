@@ -18,13 +18,7 @@ function TransHistory() {
               setTrans(res.data.data);
           })
           .catch((err) => {
-            if(err.message =='Network Error'){
-              console.error('Network Error', err.message)
-            }else if(err.response.statusText == 'Bad Request'){
-              console.error('Bad Request', err.response.data.message)
-            }else{
-              console.info('error info', err.response.data.message)
-            }
+            console.info('error info', err.response.data.message)
           })
     }, []);
 

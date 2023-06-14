@@ -7,7 +7,7 @@ import SeoHead from "../components/SeoHead";
 
 import { injectStyle } from "react-toastify/dist/inject-style";
 import { useEffect, useState } from "react";
-import services from "../config/services";
+import { getSession } from "../config/services";
 import Pricing from "../components/Pricing";
 
 export default function generate() {
@@ -16,7 +16,7 @@ export default function generate() {
   useEffect(() => {
     injectStyle();
 
-    const _details =  services.getSession('sitedetails')
+    const _details =  getSession('sitedetails')
     setSitedetails(_details)
   })
 

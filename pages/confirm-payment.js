@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Error from "../components/Error";
 import SeoHead from "../components/SeoHead";
 import Success from "../components/Success";
-import services from "../config/services";
+import { getUrlParams } from "../config/services";
 import { injectStyle } from "react-toastify/dist/inject-style";
 import post_request from "../config/post.request";
 
@@ -10,9 +10,9 @@ import post_request from "../config/post.request";
 export default function confirmPayment() {
     const [message, setMessage] = useState("")
     const [loaded, setLoaded] = useState(false);
-    const status = services.getUrlParams("status");
-    const tx_ref = services.getUrlParams("tx_ref");
-    const transaction_id = services.getUrlParams("transaction_id");
+    const status = getUrlParams("status");
+    const tx_ref = getUrlParams("tx_ref");
+    const transaction_id = getUrlParams("transaction_id");
 
     const verifyUserPayment = async (status, tx_ref, transaction_id) => {
         setLoaded(true) 

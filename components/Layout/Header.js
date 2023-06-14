@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Link as LinkScroll } from "react-scroll";
 import ButtonOutline from "../misc/ButtonOutline";
 import LogoVPN from "../../public/assets/used/Logo.svg";
-import services from "../../config/services";
+import { getSession } from "../../config/services";
 
 const Header = () => {
   const [activeLink, setActiveLink] = useState(null);
@@ -99,7 +99,7 @@ const Header = () => {
               Contact
             </LinkScroll>
           </ul>
-          {services.getSession('isloggedin') ?  <div className="col-start-10 col-end-12 font-medium flex justify-end items-center">
+          {getSession('isloggedin') ?  <div className="col-start-10 col-end-12 font-medium flex justify-end items-center">
             <Link href={'/_generate'}><ButtonOutline>Generate</ButtonOutline></Link>
           </div>
           :

@@ -2,10 +2,8 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { object, string } from "yup";
 import { toast } from "react-toastify";
-import axios from "axios";
 
-import services from "../config/services";
-import api_urls from "../config/urls";
+import { setSession, storageAvailable } from "../config/services";
 import ButtonPrimary from "./misc/ButtonPrimary";
 import Label from "./misc/Label";
 import Input from "../components/misc/Input";
@@ -38,9 +36,9 @@ function Login() {
       const userData = await loginSchema.validate(formData);
       await post_request.loginUser(userData)
       .then((res) => {
-          if (services.storageAvailable("sessionStorage")) {
-            services.setSession("token", JSON.stringify(res.data));
-            services.setSession("isloggedin", true);
+          if (storageAvailable("sessionStorage")) {
+            setSession("token", JSON.stringify(res.data));
+            setSession("isloggedin", true);
           }
           const message = res.data.message + ", welcome back " + res.data.data.username;
           toast.success(message);

@@ -8,10 +8,11 @@ import ScrollAnimationWrapper from "./Layout/ScrollAnimationWrapper";
 import ButtonPrimary from "./misc/ButtonPrimary";
 import Textarea from "./misc/Textarea";
 import Loader from "./Layout/Loader";
-import services from "../config/services";
+import { copy, download } from "../config/services";
 import post_request from "../config/post.request";
 import CopyIcon from "./misc/CopyIcon";
 import DownloadIcon from "./misc/DownloadIcon";
+import get_request from "../config/get.request";
 
 const Tryout = ({details}) => {
 
@@ -38,9 +39,8 @@ const Tryout = ({details}) => {
     try {
       setLoaded(true);
       e.preventDefault();
-      const ip_address = await services.getUserIp();
       const queryData = await schema.validate(formData);
-      await post_request.tryOutNotify(queryData.query, ip_address)
+      await post_request.tryOutNotify(queryData.query)
         .then((res) => {
           toast.success(res.data.message);
           setQuestion(res.data.data.query)
@@ -61,13 +61,12 @@ const Tryout = ({details}) => {
   }
 
   const getUserFreeTeir = async () => {
-    const ip_address = await services.getUserIp();
-    await post_request.getUserSearchTrack(ip_address)
+    await get_request.getUserSearchTrack()
     .then((res) => {
       setUserTrack(res.data.data)
     })
     .catch((error) => {
-    
+      console.error(error.response.data.message);
     })
   }
 
@@ -76,14 +75,14 @@ const Tryout = ({details}) => {
   }, []);
 
   const copyPrompt = () => {
-    const response = services.copy(answer)
+    const response = copy(answer)
     if(response){
       toast.success("copied!");   
     }
   };
 
   const downloadPrompt = () => {
-    const response = services.download(answer)
+    const response = download(answer)
     if(response){
       toast.success("downloaded!");   
     }

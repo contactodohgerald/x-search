@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import getScrollAnimation from "../utils/getScrollAnimation";
 import ScrollAnimationWrapper from "./Layout/ScrollAnimationWrapper";
 import Loader from "./Layout/Loader";
-import services from "../config/services";
+import { clearSession, getSession } from "../config/services";
 import get_request from "../config/get.request";
 import post_request from "../config/post.request";
 import { toast } from "react-toastify";
@@ -31,7 +31,7 @@ const Pricing = ({ details }) => {
   }, []);
 
   const processSubscription = async (uuid) => {
-    const isLoggedIn = services.getSession('isloggedin');
+    const isLoggedIn = getSession('isloggedin');
     if (isLoggedIn) {
       setLoaded(true)
       await post_request.makePayment(uuid, 'flutterwave')
@@ -40,7 +40,7 @@ const Pricing = ({ details }) => {
         })
         .catch((err) => {
           if(err.response.statusText == 'Unauthorized'){
-            services.clearSession();
+            clearSession();
           }
           toast.error(err.response.data.message)
         })
